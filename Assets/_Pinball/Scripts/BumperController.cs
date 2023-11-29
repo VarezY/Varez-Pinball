@@ -9,7 +9,7 @@ public class BumperController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // memastikan yang menabrak adalah bola
-        if (collision.gameObject.tag == "Pinball")
+        if (collision.gameObject.CompareTag("Pinball"))
         {
             // kita lakukan debug
             Rigidbody bolaRig = collision.gameObject.GetComponent<Rigidbody>();
