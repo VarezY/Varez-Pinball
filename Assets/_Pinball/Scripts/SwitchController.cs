@@ -20,16 +20,18 @@ public class SwitchController : MonoBehaviour
 
     [SerializeField] private int _blinkDelay = 5;
     
-    public bool _isOn;
+    public event Action<SwitchController> _OnTriggerEnterSwitch;
+    
     private Renderer _renderer;
     private SwitchState _switchState;
+    public bool _isOn;
 
     private void Start()
     {
         _renderer = GetComponent<Renderer>();
         _renderer.material = _offMaterial;
 
-        StartCoroutine(BlinkTimerStart(_blinkDelay));
+        StartCoroutine(BlinkTimerStart(_blinkDelay, 5));
     }
 
     private void OnTriggerEnter(Collider other)
@@ -37,6 +39,12 @@ public class SwitchController : MonoBehaviour
         if (other.CompareTag("Pinball"))
         {
             ToggleSwitch();
+            
+            // Trigger enter Evoke Action for other Script
+            if (_OnTriggerEnterSwitch != null)
+            {
+                _OnTriggerEnterSwitch(this);
+            }
         }
     }
 
@@ -66,11 +74,18 @@ public class SwitchController : MonoBehaviour
             _renderer.material = _offMaterial;
         }
     }
-    
-    private IEnumerator BlinkTimerStart(int time)
+
+    public void TurnOnBlink(int timeDelay, int numBlink)
     {
-        yield return new WaitForSeconds(time);
-        StartCoroutine(Blink(2));
+        _switchState = SwitchState.Off;
+        _renderer.material = _offMaterial;
+        StartCoroutine(BlinkTimerStart(timeDelay, numBlink));
+    }
+
+    private IEnumerator BlinkTimerStart(int delayTime, int blinkTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        StartCoroutine(Blink(blinkTime));
     }
     
     private IEnumerator Blink(int times)
@@ -89,7 +104,7 @@ public class SwitchController : MonoBehaviour
 	
         // set menjadi off kembali setelah proses blink
         _switchState = SwitchState.Off;
-        StartCoroutine(BlinkTimerStart(_blinkDelay));
+        // StartCoroutine(BlinkTimerStart(_blinkDelay, 5));
 
     }
 }

@@ -1,16 +1,97 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SwitchHandler : MonoBehaviour
 {
-    public List<SwitchController> _Switches;
+    [Header("SFX & VFX")]
+    [SerializeField] 
+    private AudioManager _audioManager;
 
-    private void Somethin()
+    [SerializeField] private VFXManager _vfxManager;
+    
+    [Header("Switches")]
+    [SerializeField]
+    private List<SwitchController> _switch;
+
+    private List<SwitchController> _switchContainer = new List<SwitchController>();
+
+    private void Start()
     {
-        if (_Switches[0]._isOn )
+        InisiateSwitch();
+    }
+
+    private void OnDestroy()
+    {
+        SwitchController[] switchList = _switch.ToArray();
+        
+        for (int i = 0; i < switchList.Length; i++)
         {
-            // SOmething
+            _switch.Add(switchList[i]);
+            switchList[i]._OnTriggerEnterSwitch -= OnToggleSwitchEnter;
+            switchList[i]._OnTriggerEnterSwitch -= PlaySfxSwitch;
+            switchList[i]._OnTriggerEnterSwitch -= PlayVfxSwitch;
         }
     }
+    
+    private void InisiateSwitch()
+    {
+        SwitchController[] switchList = _switch.ToArray();
+        
+        for (int i = 0; i < switchList.Length; i++)
+        {
+            switchList[i]._OnTriggerEnterSwitch += OnToggleSwitchEnter;
+            switchList[i]._OnTriggerEnterSwitch += PlaySfxSwitch;
+            switchList[i]._OnTriggerEnterSwitch += PlayVfxSwitch;
+        }
+    }
+
+    private void PlayVfxSwitch(SwitchController obj)
+    {
+        _vfxManager.PlaySwitchVFX(obj.transform.position);
+    }
+
+    private void PlaySfxSwitch(SwitchController obj)
+    {
+        _audioManager.PlaySwitchSFX(obj.transform.position);
+    }
+
+    private void OnToggleSwitchEnter(SwitchController obj)
+    {
+        Debug.Log("Toggle the switch");
+
+        if (!_switchContainer.Contains(obj))
+        {
+            Debug.Log("Add this switch to container");
+            _switchContainer.Add(obj);
+        }
+        else 
+        {
+            // Remove the obj from score
+            Debug.Log("Remove this switch to container");
+            _switchContainer.Remove(obj);
+        }
+        Debug.Log(_switchContainer.Count);
+
+        if (_switchContainer.Count == _switch.Capacity)
+        {
+            Debug.Log("Bonus Point");
+            // Reset all Switch
+            _switchContainer.Clear();
+            ResetSwitches();
+            // _isOn = false;
+            // obj.SetMaterial(_isOn);
+        }
+    }
+
+    private void ResetSwitches()
+    {
+        SwitchController[] switchList = _switch.ToArray();
+        for (int i = 0; i < switchList.Length; i++)
+        {
+            switchList[i].TurnOnBlink(0, 5);
+        }
+    }
+
 }
