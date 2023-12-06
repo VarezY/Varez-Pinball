@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 
 public class SwitchController : MonoBehaviour
@@ -24,6 +25,8 @@ public class SwitchController : MonoBehaviour
     
     private Renderer _renderer;
     private SwitchState _switchState;
+    
+    [Header("Debug")]
     public bool _isOn;
 
     private void Start()

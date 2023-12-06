@@ -61,20 +61,19 @@ public class SwitchHandler : MonoBehaviour
     {
         Debug.Log("Toggle the switch");
 
-        if (!_switchContainer.Contains(obj))
+        if (!obj._isOn)
         {
-            Debug.Log("Add this switch to container");
-            _switchContainer.Add(obj);
+            Debug.Log("Turn on this Switch");
         }
         else 
         {
-            // Remove the obj from score
-            Debug.Log("Remove this switch to container");
-            _switchContainer.Remove(obj);
+            Debug.Log("Turn off this Switch");
         }
-        Debug.Log(_switchContainer.Count);
+        obj._isOn = !obj._isOn;
 
-        if (_switchContainer.Count == _switch.Capacity)
+        Debug.Log(BonusPoint());
+
+        if (BonusPoint() == _switch.Capacity)
         {
             Debug.Log("Bonus Point");
             // Reset all Switch
@@ -83,6 +82,21 @@ public class SwitchHandler : MonoBehaviour
             // _isOn = false;
             // obj.SetMaterial(_isOn);
         }
+    }
+
+    private int BonusPoint()
+    {
+        int point = 0;
+        SwitchController[] switchList = _switch.ToArray();
+        for (int i = 0; i < switchList.Length; i++)
+        {
+            if (switchList[i]._isOn)
+            {
+                point += 1;
+            }
+        }
+
+        return point;
     }
 
     private void ResetSwitches()
