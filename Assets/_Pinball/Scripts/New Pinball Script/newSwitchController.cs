@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections;
 using UnityEngine;
 
-public class SwitchController : MonoBehaviour
+public class newSwitchController : MonoBehaviour
 {
     private enum SwitchState
     {
@@ -14,41 +13,46 @@ public class SwitchController : MonoBehaviour
     }
     
     [SerializeField] 
-    private Material _onMaterial;
+    private Material onMaterial;
 
     [SerializeField] 
-    private Material _offMaterial;
+    private Material offMaterial;
 
-    [SerializeField] private int _blinkDelay = 5;
-    
-    public event Action<SwitchController> _OnTriggerEnterSwitch;
+    [SerializeField] private int blinkDelay = 5;
+    [SerializeField] private int id;
     
     private Renderer _renderer;
     private SwitchState _switchState;
-    
-    [Header("Debug")]
-    public bool _isOn;
+    private int _bonusScore;
+
+    [Header("Debug")] public bool isOn;
+
+    public int GETId()
+    {
+        return id;
+    }
 
     private void Start()
     {
+        GameEvents.Instantiate.onToogleSwitch += ToogleSwitch;
+        
         _renderer = GetComponent<Renderer>();
-        _renderer.material = _offMaterial;
-        _isOn = false;
-
-        StartCoroutine(BlinkTimerStart(_blinkDelay, 5));
+        _renderer.material = offMaterial;
+        isOn = false;
+        
+        TurnOnBlink(blinkDelay, 5);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnDestroy()
     {
-        if (other.CompareTag("Pinball"))
+        GameEvents.Instantiate.onToogleSwitch -= ToogleSwitch;
+    }
+
+    private void ToogleSwitch(int obj)
+    {
+        if (obj == id)
         {
             ToggleSwitch();
-            
-            // Trigger enter Evoke Action for other Script
-            if (_OnTriggerEnterSwitch != null)
-            {
-                _OnTriggerEnterSwitch(this);
-            }
         }
     }
 
@@ -63,26 +67,27 @@ public class SwitchController : MonoBehaviour
             SetMaterial(true);
         }
     }
-
+    
     private void SetMaterial(bool active)
     {
         if (active)
         {
             _switchState = SwitchState.On;
             StopAllCoroutines();
-            _renderer.material = _onMaterial;
+            _renderer.material = onMaterial;
         }
         else
         {
             _switchState = SwitchState.Off;
-            _renderer.material = _offMaterial;
+            _renderer.material = offMaterial;
         }
     }
 
+    #region BLINK SWITCH
     public void TurnOnBlink(int timeDelay, int numBlink)
     {
         _switchState = SwitchState.Off;
-        _renderer.material = _offMaterial;
+        _renderer.material = offMaterial;
         StartCoroutine(BlinkTimerStart(timeDelay, numBlink));
     }
 
@@ -100,9 +105,9 @@ public class SwitchController : MonoBehaviour
         // mulai proses blink tanpa mengubah state lagi
         for (int i = 0; i < times; i++)
         {
-            _renderer.material = _onMaterial;
+            _renderer.material = onMaterial;
             yield return new WaitForSeconds(0.5f);
-            _renderer.material = _offMaterial;
+            _renderer.material = offMaterial;
             yield return new WaitForSeconds(0.5f);
         }
 	
@@ -111,4 +116,6 @@ public class SwitchController : MonoBehaviour
         // StartCoroutine(BlinkTimerStart(_blinkDelay, 5));
 
     }
+    #endregion
+    
 }
