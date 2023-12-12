@@ -34,7 +34,7 @@ public class newSwitchController : MonoBehaviour
 
     private void Start()
     {
-        GameEvents.Instantiate.onToogleSwitch += ToogleSwitch;
+        GameEvents.Instantiate.ONToogleSwitch += ToogleSwitch;
         
         _renderer = GetComponent<Renderer>();
         _renderer.material = offMaterial;
@@ -45,7 +45,7 @@ public class newSwitchController : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameEvents.Instantiate.onToogleSwitch -= ToogleSwitch;
+        GameEvents.Instantiate.ONToogleSwitch -= ToogleSwitch;
     }
 
     private void ToogleSwitch(int obj)

@@ -170,9 +170,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59eda0f39ca1a7743ad3adce7abe4ef5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioManager: {fileID: 811836311}
-  _vfxManager: {fileID: 1737499033}
-  _switch:
+  audioManager: {fileID: 0}
+  vfxManager: {fileID: 0}
+  point: 1
+  bonusPoint: 5
+  switch:
   - {fileID: 2925615989087589246}
   - {fileID: 1287169524}
   - {fileID: 1117277257}
@@ -805,7 +807,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmAudioSource: {fileID: 719100772}
-  sfxAudioSource: {fileID: 7081172545322515510, guid: 6aa93666cdedcbd44850051ff4e98cca, type: 3}
   sfxSwitch: {fileID: 3508695034737540470, guid: 41ca981387d1a7f49af229cd68653538, type: 3}
   sfxBumper: {fileID: 0}
 --- !u!4 &811836312
@@ -908,7 +909,7 @@ MonoBehaviour:
   offMaterial: {fileID: 2100000, guid: 4a159d4f507f25a4eafd611b9be7eece, type: 2}
   blinkDelay: 5
   id: 3
-  _isOn: 0
+  isOn: 0
 --- !u!23 &1117277258
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1252,7 +1253,7 @@ MonoBehaviour:
   offMaterial: {fileID: 2100000, guid: 4a159d4f507f25a4eafd611b9be7eece, type: 2}
   blinkDelay: 5
   id: 2
-  _isOn: 0
+  isOn: 0
 --- !u!23 &1287169525
 MeshRenderer:
   m_ObjectHideFlags: 0

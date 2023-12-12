@@ -6,7 +6,6 @@ public class AudioManager : MonoBehaviour
 {
 
     public AudioSource bgmAudioSource;
-    public GameObject sfxAudioSource;
     [SerializeField] private GameObject sfxSwitch;
     [SerializeField] private GameObject sfxBumper;
     
@@ -20,11 +19,6 @@ public class AudioManager : MonoBehaviour
         bgmAudioSource.Play();
     }
 
-    public void PlaySFX(Vector3 spawnPos)
-    {
-        Instantiate(sfxAudioSource, spawnPos, Quaternion.identity);
-    }
-    
     public void PlayBumperSFX(Vector3 spawnPos)
     {
         Instantiate(sfxBumper, spawnPos, Quaternion.identity);

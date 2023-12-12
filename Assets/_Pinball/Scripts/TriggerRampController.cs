@@ -1,16 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class newSwitchTrigger : MonoBehaviour
+public class TriggerRampController : MonoBehaviour
 {
-    [SerializeField] private int id;
-    
+    [SerializeField] private int point;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Pinball"))
         {
-            GameEvents.Instantiate.ToggleSwitchAction(id);
+            GameEvents.Instantiate.UpdateScore(point);
         }
     }
 }
