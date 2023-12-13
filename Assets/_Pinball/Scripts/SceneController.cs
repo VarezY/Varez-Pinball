@@ -24,4 +24,9 @@ public class SceneController : MonoBehaviour
     {
         Application.Quit();
     }
+
+    public void TestButton(string text)
+    {
+        Debug.Log(text);
+    }
 }
